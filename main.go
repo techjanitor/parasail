@@ -10,16 +10,20 @@ import (
 func main() {
 	k := kite.New("parasail", "1.0.0")
 	k.Config.Port = 6000
-
-	k.HandleFunc("hello", Hello)
+	k.Config.Username = "parasail"
+	k.Config.KiteKey = "/root/.kite/kite.key"
+	k.Config.Environment = "digitalocean"
+	k.Config.Environment = "nyc"
 
 	discovery := &url.URL{
 		Scheme: "http",
 		Host:   "discovery.modnode.com:6000",
-		Path:   "/kite",
+		Path:   "kite",
 	}
 
 	k.RegisterHTTPForever(discovery)
+
+	k.HandleFunc("hello", Hello)
 
 	k.Run()
 }
