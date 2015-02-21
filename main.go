@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/koding/kite"
@@ -72,6 +73,7 @@ func main() {
 	k.Register(discovery)
 
 	k.HandleFunc("hello", Hello)
+	k.HandleFunc("exec", Exec)
 
 	k.Run()
 
@@ -80,8 +82,26 @@ func main() {
 func Hello(r *kite.Request) (interface{}, error) {
 	// Print a log on remote Kite.
 	// This message will be printed on client's console.
-	r.Client.Go("kite.log", fmt.Sprintf("Hello %s!", r.LocalKite.Kite().Name))
+	r.Client.Go("kite.log", fmt.Sprintf("Hello from %s!", r.LocalKite.Kite().Name))
 
 	// You can return anything as result, as long as it is JSON marshalable.
 	return nil, nil
+}
+
+func Exec(r *kite.Request) (interface{}, error) {
+	r.Client.Go("kite.log", fmt.Sprintf("Executing on %s!", r.LocalKite.Kite().Hostname))
+
+	command := r.Args.One().MustString()
+
+	cmd := strings.Split(command, " ")
+
+	cmd, err := exec.Command("bash", "-c", cmd...).Output()
+	if err != nil {
+		return nil, err
+	}
+
+	output := fmt.Sprintf("%s", cmd)
+
+	return output, nil
+
 }
