@@ -15,7 +15,7 @@ func main() {
 	k.Config.Environment = "digitalocean"
 	k.Config.Environment = "nyc"
 
-	k.Config.KontrolURL = "http://discovery.modnode.com:6000"
+	k.Config.KontrolURL = "http://discovery.modnode.com:6000/kite"
 	k.Config.KontrolUser = "parasail"
 	k.Config.KontrolKey = "/root/.kite/kite.key"
 
