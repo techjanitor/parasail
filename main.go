@@ -9,7 +9,7 @@ import (
 
 func main() {
 	k := kite.New("parasail", "1.0.0")
-	k.SetLogLevel(DEBUG)
+	k.SetLogLevel(kite.Level.DEBUG)
 
 	k.Config.Port = 6000
 	k.Config.Username = "parasail"
