@@ -23,5 +23,5 @@ func Hello(r *kite.Request) (interface{}, error) {
 	r.Client.Go(fmt.Sprintf("Hello %s!", r.LocalKite.Kite().Name))
 
 	// You can return anything as result, as long as it is JSON marshalable.
-	return result, nil
+	return nil, nil
 }
