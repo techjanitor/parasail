@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"net/url"
-	"strings"
+	"os/exec"
 	"time"
 
 	"github.com/koding/kite"
@@ -17,6 +16,11 @@ var (
 )
 
 func init() {
+
+	k.Config.Port = 6000
+	k.Config.Username = username
+	k.Config.Environment = "digitalocean"
+	k.Config.Region = "nyc"
 
 	kontrol := k.NewClient(discoveryUrl)
 	err := kontrol.Dial()
@@ -41,6 +45,9 @@ func init() {
 
 func main() {
 
+	k.HandleFunc("hello", Hello)
+	k.HandleFunc("exec", Exec)
+
 	key, err := kitekey.Read()
 	if err != nil {
 		fmt.Println(err)
@@ -53,27 +60,15 @@ func main() {
 		return
 	}
 
-	k.Config.Username = username
-	k.Config.Environment = "digitalocean"
-	k.Config.Region = "nyc"
+	k.SetLogLevel(kite.DEBUG)
 
-	k.Config.Port = 6000
 	k.Config.KiteKey = key
 
 	k.Config.KontrolURL = discoveryUrl
 	k.Config.KontrolUser = "discovery"
 	k.Config.KontrolKey = token.Claims["kontrolKey"].(string)
 
-	discovery := &url.URL{
-		Scheme: "http",
-		Host:   "discovery.modnode.com:6000",
-		Path:   "kite",
-	}
-
-	k.Register(discovery)
-
-	k.HandleFunc("hello", Hello)
-	k.HandleFunc("exec", Exec)
+	k.Register(k.RegisterURL(false))
 
 	k.Run()
 
@@ -93,15 +88,13 @@ func Exec(r *kite.Request) (interface{}, error) {
 
 	command := r.Args.One().MustString()
 
-	cmd := strings.Split(command, " ")
-
-	cmd, err := exec.Command("bash", "-c", cmd...).Output()
+	out, err := exec.Command("bash", "-c", command).Output()
 	if err != nil {
 		return nil, err
 	}
 
-	output := fmt.Sprintf("%s", cmd)
+	response := string(out[:])
 
-	return output, nil
+	return response, nil
 
 }
