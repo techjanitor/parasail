@@ -13,7 +13,7 @@ func main() {
 
 	k.HandleFunc("hello", Hello)
 
-	k.RegisterHTTPForever(&url.URL{Scheme: "http", Host: "discovery.modnode.com:6000", Path: "/kite"})
+	k.RegisterHTTP(&url.URL{Scheme: "http", Host: "discovery.modnode.com:6000", Path: "/kite"})
 	k.Run()
 }
 
