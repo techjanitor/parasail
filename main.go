@@ -12,12 +12,12 @@ func main() {
 	k.SetLogLevel(kite.DEBUG)
 
 	k.Config.Port = 6000
-	k.Config.Username = "parasail"
-	k.Config.KiteKey = "/root/.kite/kite.key"
 	k.Config.Environment = "digitalocean"
 	k.Config.Environment = "nyc"
+
 	k.Config.KontrolURL = "http://discovery.modnode.com:6000"
 	k.Config.KontrolUser = "parasail"
+	k.Config.KontrolKey = "/root/.kite/kite.key"
 
 	discovery := &url.URL{
 		Scheme: "http",
@@ -27,7 +27,7 @@ func main() {
 
 	fmt.Println(discovery.String())
 
-	k.RegisterHTTPForever(discovery)
+	k.RegisterForever(discovery)
 
 	k.HandleFunc("hello", Hello)
 
