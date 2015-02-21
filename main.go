@@ -11,9 +11,12 @@ func main() {
 	k := kite.New("parasail", "1.0.0")
 	k.SetLogLevel(kite.DEBUG)
 
+	c.Config.Username = "parasail"
+	c.Config.KiteKey = "/root/.kite/kite.key"
+
 	k.Config.Port = 6000
 	k.Config.Environment = "digitalocean"
-	k.Config.Environment = "nyc"
+	k.Config.Region = "nyc"
 
 	k.Config.KontrolURL = "http://discovery.modnode.com:6000/kite"
 	k.Config.KontrolUser = "parasail"
