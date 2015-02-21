@@ -23,6 +23,8 @@ func main() {
 		Path:   "kite",
 	}
 
+	fmt.Println(discovery.String())
+
 	k.RegisterHTTPForever(discovery)
 
 	k.HandleFunc("hello", Hello)
