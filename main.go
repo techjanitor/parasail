@@ -11,8 +11,8 @@ func main() {
 	k := kite.New("parasail", "1.0.0")
 	k.SetLogLevel(kite.DEBUG)
 
-	c.Config.Username = "parasail"
-	c.Config.KiteKey = "/root/.kite/kite.key"
+	k.Config.Username = "parasail"
+	k.Config.KiteKey = "/root/.kite/kite.key"
 
 	k.Config.Port = 6000
 	k.Config.Environment = "digitalocean"
