@@ -17,7 +17,7 @@ func main() {
 
 	k.Config.KontrolURL = "http://discovery.modnode.com:6000/kite"
 	k.Config.KontrolUser = "parasail"
-	k.Config.KontrolKey = "/root/.kite/kite.key"
+	k.Config.KontrolKey = "/root/key.pem"
 
 	discovery := &url.URL{
 		Scheme: "http",
