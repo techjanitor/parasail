@@ -96,7 +96,13 @@ func main() {
 
 				fmt.Fprintln(f, client.Hostname)
 
-				fmt.Fprint(f, response.String())
+				output, err := response.String()
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+
+				fmt.Fprint(f, output)
 
 				client.Close()
 
