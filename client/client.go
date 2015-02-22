@@ -31,7 +31,7 @@ func main() {
 
 	methodFlag := flag.String("method", "", "method to be used on the hosts")
 	commandFlag := flag.String("command", "", "the command to be executed on the hosts")
-	initialFlag := flag.Bool("initial", "", "register with kontrol")
+	initialFlag := flag.Bool("initial", false, "register with kontrol")
 	flag.Parse()
 
 	if *methodFlag == "" {

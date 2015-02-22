@@ -27,7 +27,7 @@ func init() {
 
 func main() {
 
-	initialFlag := flag.Bool("initial", "", "register with kontrol")
+	initialFlag := flag.Bool("initial", false, "register with kontrol")
 	flag.Parse()
 
 	if *initialFlag {
