@@ -57,8 +57,6 @@ func main() {
 	k.Config.KontrolUser = "discovery"
 	k.Config.KontrolKey = token.Claims["kontrolKey"].(string)
 
-	k.UseTLS(Cert, Key)
-
 	k.Register(k.RegisterURL(false))
 
 	k.Run()
