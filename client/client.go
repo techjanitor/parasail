@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"bufio"
@@ -25,36 +25,22 @@ func init() {
 	k.Config.Environment = "digitalocean"
 	k.Config.Region = "nyc"
 
-	kontrol := k.NewClient(discoveryUrl)
-	err := kontrol.Dial()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	result, err := kontrol.TellWithTimeout("registerMachine", 5*time.Minute, username)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	err = kitekey.Write(result.MustString())
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
 }
 
 func main() {
 
 	methodFlag := flag.String("method", "", "method to be used on the hosts")
 	commandFlag := flag.String("command", "", "the command to be executed on the hosts")
+	initialFlag := flag.Bool("initial", "", "register with kontrol")
 	flag.Parse()
 
 	if *methodFlag == "" {
 		fmt.Println("method required")
 		return
+	}
+
+	if *initialFlag {
+		initial()
 	}
 
 	key, err := kitekey.Read()
@@ -116,4 +102,27 @@ func main() {
 
 	wg.Wait()
 
+}
+
+func initial() {
+	kontrol := k.NewClient(discoveryUrl)
+	err := kontrol.Dial()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	result, err := kontrol.TellWithTimeout("registerMachine", 5*time.Minute, username)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	err = kitekey.Write(result.MustString())
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	return
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os/exec"
 	"time"
@@ -22,6 +23,49 @@ func init() {
 	k.Config.Environment = "digitalocean"
 	k.Config.Region = "nyc"
 
+}
+
+func main() {
+
+	initialFlag := flag.Bool("initial", "", "register with kontrol")
+	flag.Parse()
+
+	if *initialFlag {
+		initial()
+	}
+
+	k.HandleFunc("hello", Hello)
+	k.HandleFunc("exec", Exec)
+
+	key, err := kitekey.Read()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	token, err := kitekey.Parse()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	k.SetLogLevel(kite.INFO)
+
+	k.Config.KiteKey = key
+
+	k.Config.KontrolURL = discoveryUrl
+	k.Config.KontrolUser = "discovery"
+	k.Config.KontrolKey = token.Claims["kontrolKey"].(string)
+
+	k.UseTLS(Cert, Key)
+
+	k.Register(k.RegisterURL(false))
+
+	k.Run()
+
+}
+
+func initial() {
 	kontrol := k.NewClient(discoveryUrl)
 	err := kontrol.Dial()
 	if err != nil {
@@ -41,39 +85,7 @@ func init() {
 		return
 	}
 
-}
-
-func main() {
-
-	k.HandleFunc("hello", Hello)
-	k.HandleFunc("exec", Exec)
-
-	key, err := kitekey.Read()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	token, err := kitekey.Parse()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	k.SetLogLevel(kite.DEBUG)
-
-	k.Config.KiteKey = key
-
-	k.Config.KontrolURL = discoveryUrl
-	k.Config.KontrolUser = "discovery"
-	k.Config.KontrolKey = token.Claims["kontrolKey"].(string)
-
-	k.UseTLS(Cert, Key)
-
-	k.Register(k.RegisterURL(false))
-
-	k.Run()
-
+	return
 }
 
 func Hello(r *kite.Request) (interface{}, error) {
