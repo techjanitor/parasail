@@ -89,7 +89,7 @@ func initial() {
 func Hello(r *kite.Request) (interface{}, error) {
 	// Print a log on remote Kite.
 	// This message will be printed on client's console.
-	r.Client.Go("kite.log", fmt.Sprintf("Hello from %s!", r.LocalKite.Kite().Name))
+	r.Client.Go("kite.log", fmt.Sprintf("Hello from %s!", r.LocalKite.Kite().Hostname))
 
 	// You can return anything as result, as long as it is JSON marshalable.
 	return nil, nil

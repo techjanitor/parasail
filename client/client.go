@@ -96,7 +96,7 @@ func main() {
 
 				fmt.Fprintln(f, client.Hostname)
 
-				fmt.Fprint(f, string(response.Raw))
+				fmt.Fprint(f, response.String())
 
 				client.Close()
 
