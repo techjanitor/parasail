@@ -86,15 +86,23 @@ func main() {
 			response, err := client.TellWithTimeout(*methodFlag, 5*time.Minute, *commandFlag)
 			if err != nil {
 				fmt.Println(err)
+				return
 			}
 
-			fmt.Fprintln(f, client.Hostname)
+			if response == nil {
 
-			output := response.MustString()
+				return
+			} else {
 
-			fmt.Fprint(f, output)
+				fmt.Fprintln(f, client.Hostname)
 
-			client.Close()
+				fmt.Fprint(f, string(response.Raw))
+
+				client.Close()
+
+				return
+
+			}
 
 		}(client)
 
