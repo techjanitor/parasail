@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	discoveryUrl = "http://discovery.modnode.com:6000/kite"
+	discoveryUrl = "http://discovery.example.com:6000/kite"
 	k            = kite.New("parasol", "1.0.0")
 	username     = "prim"
 )
