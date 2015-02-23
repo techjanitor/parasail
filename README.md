@@ -1,2 +1,2 @@
 # parasail
-remote management
+an example of a kite agent/client and kontrol
